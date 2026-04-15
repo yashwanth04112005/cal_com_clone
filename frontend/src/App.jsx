@@ -13,6 +13,8 @@ import AppStorePage from './pages/admin/AppStorePage.jsx';
 import InstalledAppsPage from './pages/admin/InstalledAppsPage.jsx';
 import InsightsPromoPage from './pages/admin/InsightsPromoPage.jsx';
 import InsightsCallHistoryPage from './pages/admin/InsightsCallHistoryPage.jsx';
+import SettingsPage from './pages/admin/SettingsPage.jsx';
+import CreateTeamPage from './pages/admin/CreateTeamPage.jsx';
 import LandingPage from './pages/public/LandingPage.jsx';
 import PublicProfilePage from './pages/public/PublicProfilePage.jsx';
 import PublicBookingPage from './pages/public/PublicBookingPage.jsx';
@@ -24,6 +26,10 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/settings/*" element={<SettingsPage />} />
+      <Route path="/admin/settings/*" element={<SettingsPage />} />
+      <Route path="/settings/teams/new" element={<CreateTeamPage />} />
+      <Route path="/admin/settings/teams/new" element={<CreateTeamPage />} />
 
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="event-types" element={<EventTypesPage />} />
