@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 
 const primaryItems = [
   { to: '/admin/event-types', label: 'Event types', icon: '▢' },
-  { to: '/admin/bookings', label: 'Bookings', icon: '◫' },
+  { to: '/admin/bookings/upcoming', label: 'Bookings', icon: '◫' },
   { to: '/admin/availability', label: 'Availability', icon: '◷' },
   { to: '/admin/teams', label: 'Teams', icon: '◉' },
   { to: '/admin/routing', label: 'Routing', icon: '↗' },

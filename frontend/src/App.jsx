@@ -34,6 +34,7 @@ export default function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="event-types" element={<EventTypesPage />} />
         <Route path="bookings" element={<BookingsPage />} />
+        <Route path="bookings/:scope" element={<BookingsPage />} />
         <Route path="availability" element={<AvailabilityPage />} />
         <Route path="availability/:scheduleId" element={<AvailabilityDetailPage />} />
         <Route path="teams" element={<TeamsPage />} />

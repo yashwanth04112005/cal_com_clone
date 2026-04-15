@@ -165,8 +165,35 @@ export async function getBookingById(id) {
 }
 
 export async function listBookings(scope = 'upcoming') {
-  const comparison = scope === 'past' ? '<' : '>=';
   const now = DateTime.utc().toFormat('yyyy-LL-dd HH:mm:ss');
+
+  if (scope === 'cancelled') {
+    return execute(
+      `SELECT b.*, et.title AS event_title, et.slug AS event_slug
+       FROM bookings b
+       JOIN event_types et ON et.id = b.event_type_id
+       WHERE b.user_id = ? AND b.status = 'cancelled'
+       ORDER BY COALESCE(b.cancelled_at, b.updated_at, b.start_time_utc) DESC`,
+      [DEFAULT_USER_ID]
+    );
+  }
+
+  if (scope === 'unconfirmed') {
+    return execute(
+      `SELECT b.*, et.title AS event_title, et.slug AS event_slug
+       FROM bookings b
+       JOIN event_types et ON et.id = b.event_type_id
+       WHERE b.user_id = ? AND b.status = 'unconfirmed'
+       ORDER BY b.start_time_utc ASC`,
+      [DEFAULT_USER_ID]
+    );
+  }
+
+  if (scope === 'recurring') {
+    return [];
+  }
+
+  const comparison = scope === 'past' ? '<' : '>=';
   return execute(
     `SELECT b.*, et.title AS event_title, et.slug AS event_slug
      FROM bookings b
