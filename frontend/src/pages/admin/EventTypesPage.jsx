@@ -5,16 +5,21 @@ import EventTypeModal from '../../components/EventTypeModal.jsx';
 
 function EventTypeRow({ eventType, onToggle }) {
   const publicPath = slugPath(eventType.slug);
+  const profilePath = `/yashwanthpaladugula/${eventType.slug}`;
 
   return (
     <article className="event-row">
-      <div>
-        <h3>{eventType.title}</h3>
-        <p className="slug-line">/yashwanthpaladugula{publicPath}</p>
+      <div className="event-row-main">
+        <div className="event-title-line">
+          <h3>{eventType.title}</h3>
+          <span className="slug-inline">{profilePath}</span>
+        </div>
         <span className="duration-chip">{formatMinutes(eventType.duration_minutes)}</span>
       </div>
 
       <div className="event-controls">
+        {!eventType.is_active ? <span className="event-hidden-tag">Hidden</span> : null}
+
         <label className="switch">
           <input
             type="checkbox"
@@ -24,13 +29,13 @@ function EventTypeRow({ eventType, onToggle }) {
           <span className="switch-track" />
         </label>
 
-        <a className="icon-btn" href={publicPath} target="_blank" rel="noreferrer">
-          Open
+        <a className="icon-btn icon-btn-square" href={publicPath} target="_blank" rel="noreferrer" aria-label="Open event link">
+          ↗
         </a>
-        <button className="icon-btn" type="button">
-          Link
+        <button className="icon-btn icon-btn-square" type="button" aria-label="Copy event link">
+          ⛓
         </button>
-        <button className="icon-btn" type="button">
+        <button className="icon-btn icon-btn-square" type="button" aria-label="More actions">
           ...
         </button>
       </div>

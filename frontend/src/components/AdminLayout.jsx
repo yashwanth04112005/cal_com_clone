@@ -1,14 +1,21 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 
 const primaryItems = [
-  { to: '/admin/event-types', label: 'Event types' },
-  { to: '/admin/bookings', label: 'Bookings' },
-  { to: '/admin/availability', label: 'Availability' },
-  { to: '/admin/event-types', label: 'Teams', muted: true },
-  { to: '/admin/event-types', label: 'Apps', muted: true },
-  { to: '/admin/event-types', label: 'Routing', muted: true },
-  { to: '/admin/event-types', label: 'Workflows', muted: true },
-  { to: '/admin/event-types', label: 'Insights', muted: true }
+  { to: '/admin/event-types', label: 'Event types', icon: '▢' },
+  { to: '/admin/bookings', label: 'Bookings', icon: '◫' },
+  { to: '/admin/availability', label: 'Availability', icon: '◷' },
+  { to: '/admin/event-types', label: 'Teams', muted: true, icon: '◉' },
+  { to: '/admin/event-types', label: 'Apps', muted: true, icon: '◧' },
+  { to: '/admin/event-types', label: 'Routing', muted: true, icon: '↗' },
+  { to: '/admin/event-types', label: 'Workflows', muted: true, icon: '⌁' },
+  { to: '/admin/event-types', label: 'Insights', muted: true, icon: '◍' }
+];
+
+const footerItems = [
+  { href: '/yashwanthpaladugula', label: 'View public page', icon: '↗', external: true },
+  { href: '#', label: 'Copy public page link', icon: '⎘' },
+  { href: '#', label: 'Refer and earn', icon: '◎' },
+  { href: '#', label: 'Settings', icon: '⚙' }
 ];
 
 export default function AdminLayout() {
@@ -21,7 +28,7 @@ export default function AdminLayout() {
             <div className="workspace-label">Yashwanth P...</div>
           </div>
           <button className="sidebar-search" type="button" aria-label="Search workspace">
-            Search
+            ⌕
           </button>
         </div>
 
@@ -34,18 +41,26 @@ export default function AdminLayout() {
                 `sidebar-link ${isActive && !item.muted ? 'sidebar-link-active' : ''} ${item.muted ? 'sidebar-link-muted' : ''}`
               }
             >
-              {item.label}
+              <span className="sidebar-link-icon" aria-hidden="true">{item.icon}</span>
+              <span>{item.label}</span>
             </NavLink>
           ))}
         </nav>
 
         <div className="sidebar-footer">
-          <Link to="/yashwanthpaladugula" target="_blank" rel="noreferrer">
-            View public page
-          </Link>
-          <a href="#">Copy public page link</a>
-          <a href="#">Refer and earn</a>
-          <a href="#">Settings</a>
+          {footerItems.map((item) => (
+            item.external ? (
+              <Link key={item.label} to={item.href} target="_blank" rel="noreferrer">
+                <span className="sidebar-footer-icon" aria-hidden="true">{item.icon}</span>
+                <span>{item.label}</span>
+              </Link>
+            ) : (
+              <a key={item.label} href={item.href}>
+                <span className="sidebar-footer-icon" aria-hidden="true">{item.icon}</span>
+                <span>{item.label}</span>
+              </a>
+            )
+          ))}
           <span className="sidebar-version">© 2026 Cal.com, Inc.</span>
         </div>
       </aside>
