@@ -41,23 +41,78 @@ export async function getEventTypeBySlug(slug) {
 }
 
 export async function listPublicEventTypesByUsername(username) {
-  const rows = await execute(
-    `SELECT et.id, et.title, et.description, et.duration_minutes, et.slug, et.is_active,
-            COALESCE(us.username, REPLACE(LOWER(u.name), ' ', '')) AS username
-     FROM event_types et
-     JOIN users u ON u.id = et.user_id
-     LEFT JOIN user_settings us ON us.user_id = u.id
-     WHERE et.deleted_at IS NULL
-       AND et.is_active = 1
-       AND (
-         COALESCE(us.username, '') = ?
-         OR REPLACE(LOWER(u.name), ' ', '') = ?
-       )
-     ORDER BY et.created_at DESC`,
-    [username.toLowerCase(), username.toLowerCase()]
-  );
+  const normalizedUsername = username.toLowerCase();
 
-  return rows;
+  try {
+    const rows = await execute(
+      `SELECT et.id, et.title, et.description, et.duration_minutes, et.slug, et.is_active,
+              COALESCE(us.username, REPLACE(LOWER(u.name), ' ', '')) AS username
+       FROM event_types et
+       JOIN users u ON u.id = et.user_id
+       LEFT JOIN user_settings us ON us.user_id = u.id
+       WHERE et.deleted_at IS NULL
+         AND et.is_active = 1
+         AND (
+           COALESCE(us.username, '') = ?
+           OR REPLACE(LOWER(u.name), ' ', '') = ?
+           OR REPLACE(LOWER(SUBSTRING_INDEX(u.email, '@', 1)), ' ', '') = ?
+         )
+       ORDER BY et.created_at DESC`,
+      [normalizedUsername, normalizedUsername, normalizedUsername]
+    );
+
+    if (rows.length > 0) {
+      return rows;
+    }
+
+    return execute(
+      `SELECT et.id, et.title, et.description, et.duration_minutes, et.slug, et.is_active,
+              COALESCE(us.username, REPLACE(LOWER(u.name), ' ', '')) AS username
+       FROM event_types et
+       JOIN users u ON u.id = et.user_id
+       LEFT JOIN user_settings us ON us.user_id = u.id
+       WHERE et.deleted_at IS NULL
+         AND et.is_active = 1
+         AND et.user_id = ?
+       ORDER BY et.created_at DESC`,
+      [DEFAULT_USER_ID]
+    );
+  } catch (error) {
+    if (error?.code !== 'ER_NO_SUCH_TABLE') {
+      throw error;
+    }
+
+    const rows = await execute(
+      `SELECT et.id, et.title, et.description, et.duration_minutes, et.slug, et.is_active,
+              REPLACE(LOWER(u.name), ' ', '') AS username
+       FROM event_types et
+       JOIN users u ON u.id = et.user_id
+       WHERE et.deleted_at IS NULL
+         AND et.is_active = 1
+         AND (
+           REPLACE(LOWER(u.name), ' ', '') = ?
+           OR REPLACE(LOWER(SUBSTRING_INDEX(u.email, '@', 1)), ' ', '') = ?
+         )
+       ORDER BY et.created_at DESC`,
+      [normalizedUsername, normalizedUsername]
+    );
+
+      if (rows.length > 0) {
+        return rows;
+      }
+
+      return execute(
+        `SELECT et.id, et.title, et.description, et.duration_minutes, et.slug, et.is_active,
+                REPLACE(LOWER(u.name), ' ', '') AS username
+         FROM event_types et
+         JOIN users u ON u.id = et.user_id
+         WHERE et.deleted_at IS NULL
+           AND et.is_active = 1
+           AND et.user_id = ?
+         ORDER BY et.created_at DESC`,
+        [DEFAULT_USER_ID]
+      );
+  }
 }
 
 export async function createEventType(payload) {

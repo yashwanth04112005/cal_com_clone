@@ -5,15 +5,20 @@ import { isoDateToday } from '../../lib/time.js';
 
 const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+function parseDateUTC(dateString) {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(Date.UTC(year, month - 1, day));
+}
+
 function addDays(dateString, days) {
-  const date = new Date(`${dateString}T00:00:00`);
-  date.setDate(date.getDate() + days);
+  const date = parseDateUTC(dateString);
+  date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
 }
 
 function addMonths(dateString, months) {
-  const date = new Date(`${dateString}T00:00:00`);
-  date.setMonth(date.getMonth() + months, 1);
+  const date = parseDateUTC(dateString);
+  date.setUTCMonth(date.getUTCMonth() + months, 1);
   return date.toISOString().slice(0, 10);
 }
 
@@ -22,12 +27,12 @@ function startOfMonth(dateString) {
 }
 
 function getMonthCells(dateString) {
-  const date = new Date(`${dateString}T00:00:00`);
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const firstDay = new Date(year, month, 1);
-  const startOffset = firstDay.getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const date = parseDateUTC(dateString);
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth();
+  const firstDay = new Date(Date.UTC(year, month, 1));
+  const startOffset = firstDay.getUTCDay();
+  const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
   const cells = [];
 
   for (let i = 0; i < startOffset; i += 1) {
@@ -42,7 +47,7 @@ function getMonthCells(dateString) {
 }
 
 function formatDateLabel(dateString) {
-  const date = new Date(`${dateString}T00:00:00`);
+  const date = parseDateUTC(dateString);
   return date.toLocaleDateString([], {
     weekday: 'long',
     month: 'long',
