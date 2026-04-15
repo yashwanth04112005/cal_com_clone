@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const primaryItems = [
   { to: '/admin/event-types', label: 'Event types', icon: '▢' },
@@ -30,12 +30,16 @@ const footerItems = [
 ];
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
   const location = useLocation();
+  const settingsRoot = location.pathname.startsWith('/settings') ? '/settings' : '/admin/settings';
   const appsPathActive = location.pathname.startsWith('/admin/apps');
   const insightsPathActive = location.pathname.startsWith('/admin/insights');
   const [appsExpanded, setAppsExpanded] = useState(appsPathActive);
   const [insightsExpanded, setInsightsExpanded] = useState(insightsPathActive);
   const [copiedPublicLink, setCopiedPublicLink] = useState(false);
+  const [openProfileMenu, setOpenProfileMenu] = useState(false);
+  const profileMenuRef = useRef(null);
   const publicPagePath = '/yashwanthpaladugula';
 
   const handleCopyPublicLink = async () => {
@@ -76,14 +80,104 @@ export default function AdminLayout() {
     }
   }, [insightsPathActive]);
 
+  useEffect(() => {
+    if (!openProfileMenu) {
+      return;
+    }
+
+    const handleOutside = (event) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setOpenProfileMenu(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setOpenProfileMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutside);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [openProfileMenu]);
+
+  const handleSignOut = () => {
+    setOpenProfileMenu(false);
+    try {
+      window.localStorage.removeItem('bookings_meta_state_v1');
+    } catch {
+      // ignore localStorage errors
+    }
+    navigate('/');
+  };
+
+  const goToProfileSection = (pathSuffix) => {
+    setOpenProfileMenu(false);
+    navigate(`${settingsRoot}${pathSuffix}`);
+  };
+
   return (
     <div className="dashboard-shell">
       <aside className="sidebar">
-        <div className="workspace-head">
-          <div className="workspace-meta">
-            <div className="workspace-avatar">YP</div>
+        <div className="workspace-head" ref={profileMenuRef}>
+          <button
+            type="button"
+            className="workspace-meta workspace-meta-button"
+            onClick={() => setOpenProfileMenu((open) => !open)}
+            aria-expanded={openProfileMenu}
+            aria-haspopup="menu"
+          >
+            <div className="workspace-avatar-wrap">
+              <div className="workspace-avatar">YP</div>
+              <span className="workspace-online-dot" aria-hidden="true" />
+            </div>
             <div className="workspace-label">Yashwanth P...</div>
-          </div>
+            <span className={`workspace-meta-caret ${openProfileMenu ? 'workspace-meta-caret-open' : ''}`} aria-hidden="true">▾</span>
+          </button>
+
+          {openProfileMenu ? (
+            <div className="profile-dropdown" role="menu" aria-label="Profile options">
+              <button type="button" className="profile-dropdown-item" onClick={() => goToProfileSection('/my-account/profile')}>
+                <span aria-hidden="true">◌</span>
+                <span>My profile</span>
+              </button>
+              <button type="button" className="profile-dropdown-item" onClick={() => goToProfileSection('/my-account/general')}>
+                <span aria-hidden="true">⚙</span>
+                <span>My settings</span>
+              </button>
+              <button type="button" className="profile-dropdown-item" onClick={() => goToProfileSection('/my-account/out-of-office')}>
+                <span aria-hidden="true">◔</span>
+                <span>Out of office</span>
+              </button>
+
+              <div className="profile-dropdown-divider" />
+
+              <a href="https://cal.com/help" target="_blank" rel="noreferrer" className="profile-dropdown-item" onClick={() => setOpenProfileMenu(false)}>
+                <span aria-hidden="true">?</span>
+                <span>Help</span>
+              </a>
+              <a href="https://cal.com/apps" target="_blank" rel="noreferrer" className="profile-dropdown-item profile-dropdown-item-split" onClick={() => setOpenProfileMenu(false)}>
+                <span className="profile-dropdown-item-main">
+                  <span aria-hidden="true">↓</span>
+                  <span>Download app</span>
+                </span>
+                <span aria-hidden="true">▸</span>
+              </a>
+
+              <div className="profile-dropdown-divider" />
+
+              <button type="button" className="profile-dropdown-item profile-dropdown-item-signout" onClick={handleSignOut}>
+                <span aria-hidden="true">↪</span>
+                <span>Sign out</span>
+              </button>
+            </div>
+          ) : null}
+
           <button className="sidebar-search" type="button" aria-label="Search workspace">
             ⌕
           </button>

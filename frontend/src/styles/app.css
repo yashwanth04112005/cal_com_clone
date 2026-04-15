@@ -338,12 +338,25 @@
   gap: 10px;
   margin-bottom: 8px;
   padding: 4px 6px 10px;
+  position: relative;
 }
 
 .workspace-meta {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.workspace-meta-button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.workspace-avatar-wrap {
+  position: relative;
 }
 
 .workspace-avatar {
@@ -358,6 +371,17 @@
   font-weight: 700;
 }
 
+.workspace-online-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #21c45d;
+  border: 1px solid #0c1017;
+  right: -1px;
+  bottom: -1px;
+}
+
 .workspace-label {
   color: #f3f7fc;
   font-weight: 600;
@@ -365,6 +389,82 @@
   letter-spacing: -0.01em;
   line-height: 1;
   font-family: 'Sora', 'Trebuchet MS', sans-serif;
+}
+
+.workspace-meta-caret {
+  color: #98a5bc;
+  font-size: 11px;
+  transition: transform 0.16s ease;
+}
+
+.workspace-meta-caret-open {
+  transform: rotate(180deg);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 6px;
+  width: 186px;
+  border: 1px solid #273141;
+  border-radius: 12px;
+  background: #10151d;
+  box-shadow: 0 16px 26px rgba(0, 0, 0, 0.45);
+  z-index: 95;
+  padding: 7px;
+}
+
+.profile-dropdown-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #dde5f1;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 9px;
+  border-radius: 9px;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-family: 'Sora', 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+}
+
+.profile-dropdown-item > span:first-child {
+  width: 14px;
+  text-align: center;
+  color: #a7b4c8;
+  font-size: 12px;
+  flex: none;
+}
+
+.profile-dropdown-item:hover {
+  background: #18212f;
+}
+
+.profile-dropdown-divider {
+  border-top: 1px solid #2a3343;
+  margin: 5px 4px;
+}
+
+.profile-dropdown-item-split {
+  justify-content: space-between;
+}
+
+.profile-dropdown-item-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.profile-dropdown-item-signout {
+  color: #f17077;
+}
+
+.profile-dropdown-item-signout > span:first-child {
+  color: #f17077;
 }
 
 .sidebar-search {
