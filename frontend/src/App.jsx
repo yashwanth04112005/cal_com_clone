@@ -6,6 +6,10 @@ import AvailabilityPage from './pages/admin/AvailabilityPage.jsx';
 import AvailabilityDetailPage from './pages/admin/AvailabilityDetailPage.jsx';
 import TeamsPage from './pages/admin/TeamsPage.jsx';
 import RoutingPage from './pages/admin/RoutingPage.jsx';
+import AppStorePage from './pages/admin/AppStorePage.jsx';
+import InstalledAppsPage from './pages/admin/InstalledAppsPage.jsx';
+import InsightsPromoPage from './pages/admin/InsightsPromoPage.jsx';
+import InsightsCallHistoryPage from './pages/admin/InsightsCallHistoryPage.jsx';
 import LandingPage from './pages/public/LandingPage.jsx';
 import PublicProfilePage from './pages/public/PublicProfilePage.jsx';
 import PublicBookingPage from './pages/public/PublicBookingPage.jsx';
@@ -24,7 +28,15 @@ export default function App() {
         <Route path="availability" element={<AvailabilityPage />} />
         <Route path="availability/:scheduleId" element={<AvailabilityDetailPage />} />
         <Route path="teams" element={<TeamsPage />} />
+        <Route path="apps" element={<AppStorePage />} />
+        <Route path="apps/installed" element={<InstalledAppsPage />} />
         <Route path="routing" element={<RoutingPage />} />
+        <Route path="insights" element={<InsightsPromoPage sectionLabel="Bookings" />} />
+        <Route path="insights/bookings" element={<InsightsPromoPage sectionLabel="Bookings" />} />
+        <Route path="insights/routing" element={<InsightsPromoPage sectionLabel="Routing" />} />
+        <Route path="insights/router-position" element={<InsightsPromoPage sectionLabel="Router position" />} />
+        <Route path="insights/call-history" element={<InsightsCallHistoryPage />} />
+        <Route path="insights/wrong-routing" element={<InsightsPromoPage sectionLabel="Wrong routing" />} />
       </Route>
 
       <Route path="/book/:slug" element={<PublicBookingPage />} />
