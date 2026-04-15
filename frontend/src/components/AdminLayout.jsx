@@ -7,7 +7,7 @@ const primaryItems = [
   { to: '/admin/availability', label: 'Availability', icon: '◷' },
   { to: '/admin/teams', label: 'Teams', icon: '◉' },
   { to: '/admin/routing', label: 'Routing', icon: '↗' },
-  { to: '/admin/event-types', label: 'Workflows', muted: true, icon: '⌁' }
+  { to: '/admin/workflows', label: 'Workflows', icon: '⌁' }
 ];
 
 const appItems = [

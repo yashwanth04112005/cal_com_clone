@@ -6,6 +6,8 @@ import AvailabilityPage from './pages/admin/AvailabilityPage.jsx';
 import AvailabilityDetailPage from './pages/admin/AvailabilityDetailPage.jsx';
 import TeamsPage from './pages/admin/TeamsPage.jsx';
 import RoutingPage from './pages/admin/RoutingPage.jsx';
+import WorkflowsPage from './pages/admin/WorkflowsPage.jsx';
+import WorkflowDetailPage from './pages/admin/WorkflowDetailPage.jsx';
 import AppStorePage from './pages/admin/AppStorePage.jsx';
 import InstalledAppsPage from './pages/admin/InstalledAppsPage.jsx';
 import InsightsPromoPage from './pages/admin/InsightsPromoPage.jsx';
@@ -31,6 +33,8 @@ export default function App() {
         <Route path="apps" element={<AppStorePage />} />
         <Route path="apps/installed" element={<InstalledAppsPage />} />
         <Route path="routing" element={<RoutingPage />} />
+        <Route path="workflows" element={<WorkflowsPage />} />
+        <Route path="workflows/:workflowId" element={<WorkflowDetailPage />} />
         <Route path="insights" element={<InsightsPromoPage sectionLabel="Bookings" />} />
         <Route path="insights/bookings" element={<InsightsPromoPage sectionLabel="Bookings" />} />
         <Route path="insights/routing" element={<InsightsPromoPage sectionLabel="Routing" />} />
