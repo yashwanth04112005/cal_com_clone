@@ -25,7 +25,6 @@ const insightItems = [
 
 const footerItems = [
   { href: '/yashwanthpaladugula', label: 'View public page', icon: '↗', external: true },
-  { href: '#', label: 'Copy public page link', icon: '⎘' },
   { href: '#', label: 'Refer and earn', icon: '◎' },
   { href: '#', label: 'Settings', icon: '⚙' }
 ];
@@ -36,6 +35,34 @@ export default function AdminLayout() {
   const insightsPathActive = location.pathname.startsWith('/admin/insights');
   const [appsExpanded, setAppsExpanded] = useState(appsPathActive);
   const [insightsExpanded, setInsightsExpanded] = useState(insightsPathActive);
+  const [copiedPublicLink, setCopiedPublicLink] = useState(false);
+  const publicPagePath = '/yashwanthpaladugula';
+
+  const handleCopyPublicLink = async () => {
+    const publicUrl = `${window.location.origin}${publicPagePath}`;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(publicUrl);
+      } else {
+        const fallbackInput = document.createElement('textarea');
+        fallbackInput.value = publicUrl;
+        fallbackInput.setAttribute('readonly', '');
+        fallbackInput.style.position = 'absolute';
+        fallbackInput.style.left = '-9999px';
+        document.body.appendChild(fallbackInput);
+        fallbackInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(fallbackInput);
+      }
+
+      setCopiedPublicLink(true);
+      window.setTimeout(() => setCopiedPublicLink(false), 1800);
+    } catch (error) {
+      console.error('Failed to copy public page link:', error);
+      setCopiedPublicLink(false);
+    }
+  };
 
   useEffect(() => {
     if (appsPathActive) {
@@ -152,6 +179,10 @@ export default function AdminLayout() {
         </nav>
 
         <div className="sidebar-footer">
+          <button type="button" className="sidebar-footer-button" onClick={handleCopyPublicLink}>
+            <span className="sidebar-footer-icon" aria-hidden="true">⎘</span>
+            <span>{copiedPublicLink ? 'Copied public page link' : 'Copy public page link'}</span>
+          </button>
           {footerItems.map((item) => (
             item.external ? (
               <Link key={item.label} to={item.href} target="_blank" rel="noreferrer">
