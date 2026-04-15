@@ -26,3 +26,75 @@ INSERT INTO booking_questions (id, event_type_id, label, question_type, is_requi
 INSERT INTO bookings (event_type_id, user_id, booker_name, booker_email, start_time_utc, end_time_utc, status) VALUES
   (1, 1, 'Aarav Sharma', 'aarav@example.com', '2026-04-16 04:30:00', '2026-04-16 05:00:00', 'confirmed'),
   (2, 1, 'Neha Patel', 'neha@example.com', '2026-04-16 06:00:00', '2026-04-16 06:45:00', 'confirmed');
+
+INSERT INTO user_settings (
+  user_id,
+  username,
+  bio,
+  language,
+  timezone,
+  time_format,
+  week_start,
+  dashboard_theme,
+  booking_theme,
+  dynamic_group_links,
+  allow_search_engine_indexing,
+  monthly_digest_email,
+  prevent_impersonation_on_bookings,
+  push_notifications_enabled,
+  experimental_features_enabled,
+  impersonation_enabled,
+  two_factor_enabled
+) VALUES (
+  1,
+  'yashwanthpaladugula',
+  '',
+  'English',
+  'Asia/Calcutta',
+  '12-hour',
+  'Sunday',
+  'system',
+  'system',
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0
+);
+
+INSERT INTO teams (user_id, name, slug, bio) VALUES
+  (1, 'Acme Inc.', 'acme-inc', 'Core scheduling team');
+
+INSERT INTO app_catalog (name, slug, category, description, is_featured) VALUES
+  ('Google Meet', 'google-meet', 'Video', 'Google video conferencing integration.', 1),
+  ('Zoom', 'zoom', 'Video', 'Zoom meeting integration.', 1),
+  ('Slack', 'slack', 'Communication', 'Send booking updates to Slack.', 1),
+  ('Zapier', 'zapier', 'Automation', 'Connect Cal.com to automation flows.', 1);
+
+INSERT INTO installed_apps (user_id, app_id) VALUES
+  (1, 1),
+  (1, 3);
+
+INSERT INTO workflows (user_id, name, trigger_event, offset_value, offset_unit, event_type_id, action_type, is_active) VALUES
+  (1, 'Cal.ai attendee call', 'before_event_starts', 1, 'hours', 1, 'call_attendee', 1),
+  (1, 'Reminder email', 'before_event_starts', 30, 'minutes', 2, 'send_email', 1);
+
+INSERT INTO call_history (user_id, contact_name, duration_seconds, status, called_at) VALUES
+  (1, 'Rachel Green', 179, 'answered', '2026-04-15 09:10:00'),
+  (1, 'Ross Geller', 131, 'no_answer', '2026-04-15 08:50:00'),
+  (1, 'Monica Geller', 214, 'answered', '2026-04-14 17:34:00');
+
+INSERT INTO webhooks (user_id, name, target_url, is_active) VALUES
+  (1, 'Booking Events', 'https://example.com/webhooks/bookings', 1);
+
+INSERT INTO api_keys (user_id, name, token) VALUES
+  (1, 'Primary integration key', 'cal_seed_primary_abc123');
+
+INSERT INTO oauth_clients (user_id, name, client_id, redirect_uri, is_active) VALUES
+  (1, 'Main App OAuth', 'oauth_seed_client_001', 'https://example.com/oauth/callback', 1);
+
+INSERT INTO referral_stats (user_id, referral_code, total_clicks, total_signups, total_payout_cents) VALUES
+  (1, 'yashwanthpaladugula-jo58', 0, 0, 0);

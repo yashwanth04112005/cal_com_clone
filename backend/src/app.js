@@ -8,6 +8,11 @@ import { availabilityRouter } from './routes/availability.routes.js';
 import { publicRouter } from './routes/public.routes.js';
 import { bookingRouter } from './routes/bookings.routes.js';
 import { questionRouter } from './routes/questions.routes.js';
+import { settingsRouter } from './routes/settings.routes.js';
+import { appsRouter } from './routes/apps.routes.js';
+import { workflowsRouter } from './routes/workflows.routes.js';
+import { insightsRouter } from './routes/insights.routes.js';
+import { referRouter } from './routes/refer.routes.js';
 
 export function createApp() {
   const app = express();
@@ -23,6 +28,11 @@ export function createApp() {
   app.use('/api/public', publicRouter);
   app.use('/api/bookings', bookingRouter);
   app.use('/api/event-types', questionRouter);
+  app.use('/api/settings', settingsRouter);
+  app.use('/api/apps', appsRouter);
+  app.use('/api/workflows', workflowsRouter);
+  app.use('/api/insights', insightsRouter);
+  app.use('/api/refer', referRouter);
 
   app.use(notFound);
   app.use(errorHandler);

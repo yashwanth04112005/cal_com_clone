@@ -163,3 +163,155 @@ CREATE TABLE email_logs (
   KEY idx_email_logs_booking_id (booking_id),
   CONSTRAINT fk_email_logs_booking_id FOREIGN KEY (booking_id) REFERENCES bookings (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE user_settings (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  username VARCHAR(120) NOT NULL,
+  bio TEXT NULL,
+  language VARCHAR(64) NOT NULL DEFAULT 'English',
+  timezone VARCHAR(64) NOT NULL DEFAULT 'Asia/Kolkata',
+  time_format ENUM('12-hour', '24-hour') NOT NULL DEFAULT '12-hour',
+  week_start ENUM('Sunday', 'Monday') NOT NULL DEFAULT 'Sunday',
+  dashboard_theme ENUM('system', 'light', 'dark') NOT NULL DEFAULT 'system',
+  booking_theme ENUM('system', 'light', 'dark') NOT NULL DEFAULT 'system',
+  dynamic_group_links TINYINT(1) NOT NULL DEFAULT 0,
+  allow_search_engine_indexing TINYINT(1) NOT NULL DEFAULT 0,
+  monthly_digest_email TINYINT(1) NOT NULL DEFAULT 0,
+  prevent_impersonation_on_bookings TINYINT(1) NOT NULL DEFAULT 0,
+  push_notifications_enabled TINYINT(1) NOT NULL DEFAULT 0,
+  experimental_features_enabled TINYINT(1) NOT NULL DEFAULT 0,
+  impersonation_enabled TINYINT(1) NOT NULL DEFAULT 0,
+  two_factor_enabled TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_user_settings_user_id (user_id),
+  UNIQUE KEY uq_user_settings_username (username),
+  CONSTRAINT fk_user_settings_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE teams (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  slug VARCHAR(180) NOT NULL,
+  bio TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_teams_user_slug (user_id, slug),
+  CONSTRAINT fk_teams_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE app_catalog (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(160) NOT NULL,
+  slug VARCHAR(180) NOT NULL,
+  category VARCHAR(80) NOT NULL,
+  description TEXT NULL,
+  is_featured TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_app_catalog_slug (slug)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE installed_apps (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  app_id BIGINT UNSIGNED NOT NULL,
+  installed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_installed_apps_user_app (user_id, app_id),
+  CONSTRAINT fk_installed_apps_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  CONSTRAINT fk_installed_apps_app_id FOREIGN KEY (app_id) REFERENCES app_catalog (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE workflows (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(180) NOT NULL,
+  trigger_event VARCHAR(80) NOT NULL,
+  offset_value INT UNSIGNED NOT NULL DEFAULT 1,
+  offset_unit ENUM('minutes', 'hours', 'days') NOT NULL DEFAULT 'hours',
+  event_type_id BIGINT UNSIGNED NULL,
+  action_type VARCHAR(120) NOT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_workflows_user_id (user_id),
+  KEY idx_workflows_event_type_id (event_type_id),
+  CONSTRAINT fk_workflows_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  CONSTRAINT fk_workflows_event_type_id FOREIGN KEY (event_type_id) REFERENCES event_types (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE call_history (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  contact_name VARCHAR(160) NOT NULL,
+  duration_seconds INT UNSIGNED NOT NULL DEFAULT 0,
+  status ENUM('answered', 'no_answer', 'missed') NOT NULL DEFAULT 'no_answer',
+  called_at DATETIME NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_call_history_user_called_at (user_id, called_at),
+  CONSTRAINT fk_call_history_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE webhooks (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  target_url VARCHAR(512) NOT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_webhooks_user_id (user_id),
+  CONSTRAINT fk_webhooks_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE api_keys (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  token VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_api_keys_token (token),
+  KEY idx_api_keys_user_id (user_id),
+  CONSTRAINT fk_api_keys_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE oauth_clients (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  name VARCHAR(160) NOT NULL,
+  client_id VARCHAR(120) NOT NULL,
+  redirect_uri VARCHAR(512) NOT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_oauth_clients_client_id (client_id),
+  KEY idx_oauth_clients_user_id (user_id),
+  CONSTRAINT fk_oauth_clients_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE referral_stats (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id BIGINT UNSIGNED NOT NULL,
+  referral_code VARCHAR(120) NOT NULL,
+  total_clicks INT UNSIGNED NOT NULL DEFAULT 0,
+  total_signups INT UNSIGNED NOT NULL DEFAULT 0,
+  total_payout_cents INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_referral_stats_user_id (user_id),
+  UNIQUE KEY uq_referral_stats_referral_code (referral_code),
+  CONSTRAINT fk_referral_stats_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
