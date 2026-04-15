@@ -4,9 +4,9 @@ const primaryItems = [
   { to: '/admin/event-types', label: 'Event types', icon: '▢' },
   { to: '/admin/bookings', label: 'Bookings', icon: '◫' },
   { to: '/admin/availability', label: 'Availability', icon: '◷' },
-  { to: '/admin/event-types', label: 'Teams', muted: true, icon: '◉' },
+  { to: '/admin/teams', label: 'Teams', icon: '◉' },
   { to: '/admin/event-types', label: 'Apps', muted: true, icon: '◧' },
-  { to: '/admin/event-types', label: 'Routing', muted: true, icon: '↗' },
+  { to: '/admin/routing', label: 'Routing', icon: '↗' },
   { to: '/admin/event-types', label: 'Workflows', muted: true, icon: '⌁' },
   { to: '/admin/event-types', label: 'Insights', muted: true, icon: '◍' }
 ];

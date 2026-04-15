@@ -1372,6 +1372,628 @@ select {
   margin-top: 12px;
 }
 
+.teams-page-panel {
+  position: relative;
+  max-width: none;
+  width: 100%;
+}
+
+.teams-upgrade-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(5, 7, 13, 0.72);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  overflow: auto;
+}
+
+.teams-upgrade-modal {
+  width: min(980px, 100%);
+  max-height: min(860px, calc(100vh - 36px));
+  border: 1px solid #2c333f;
+  border-radius: 16px;
+  background: #17181c;
+  overflow-y: auto;
+  padding: 18px 20px 16px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+.teams-upgrade-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.teams-upgrade-head h1 {
+  margin: 0;
+  font-family: 'Sora', 'Trebuchet MS', sans-serif;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.teams-upgrade-head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.teams-billing-toggle {
+  border: 1px solid #303645;
+  background: #242934;
+  border-radius: 10px;
+  display: inline-flex;
+  padding: 2px;
+}
+
+.teams-billing-toggle button {
+  border: 0;
+  background: transparent;
+  color: #c9d2e0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.teams-billing-toggle button:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.teams-toggle-active {
+  background: #0f141d !important;
+  color: #eef2f8 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.teams-discount-pill {
+  font-size: 10px;
+  color: #8cb8ff;
+  border: 1px solid #365070;
+  border-radius: 999px;
+  padding: 1px 5px;
+}
+
+.teams-close {
+  border: 0;
+  background: transparent;
+  color: #c7d0dc;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 8px;
+}
+
+.teams-close:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.teams-info-strip strong {
+  display: block;
+}
+
+.teams-info-strip p {
+  margin: 4px 0 0;
+  color: #aeb8c7;
+}
+
+.teams-page-card {
+  min-height: calc(100vh - 60px);
+  border-radius: 12px;
+  background: #2b2b2b;
+  padding: 64px 56px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.teams-page-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.teams-feature-card {
+  width: min(700px, 100%);
+  min-height: 452px;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.teams-feature-card .teams-hero-copy,
+.teams-feature-card .teams-preview-wrap {
+  min-height: 452px;
+}
+
+.teams-hero-copy,
+.teams-preview-wrap {
+  min-height: 452px;
+}
+
+.teams-hero-copy {
+  background: #0c0c0d;
+  border-radius: 22px;
+  border: 1px solid #1c1d21;
+  padding: 18px 20px 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.teams-kicker {
+  display: inline-flex;
+  width: fit-content;
+  border: 1px solid #273041;
+  border-radius: 999px;
+  background: #11131a;
+  color: #cfd7e4;
+  padding: 4px 9px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.teams-hero-copy h1 {
+  margin: 0;
+  font-family: 'Sora', 'Trebuchet MS', sans-serif;
+  font-size: clamp(27px, 3vw, 34px);
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+  max-width: 350px;
+}
+
+.teams-hero-copy p {
+  color: #aeb7c4;
+  margin: 12px 0 0;
+  max-width: 370px;
+  font-size: 15px;
+}
+
+.teams-feature-list {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  color: #cfd7e4;
+  display: grid;
+  gap: 7px;
+}
+
+.teams-availability-line {
+  margin-top: auto;
+}
+
+.teams-actions {
+  margin-top: 14px;
+}
+
+.teams-preview-wrap {
+  display: grid;
+  place-items: center;
+}
+
+.teams-preview-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 22px 22px 0;
+  background: #f7f7f6;
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.teams-preview-badge {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid #dfe2e5;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 14px;
+  color: #697282;
+  background: #fff;
+}
+
+.teams-preview-form-card {
+  width: 66%;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 18px 14px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.teams-preview-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8a5b38, #d8b28e);
+  border: 3px solid #ffffff;
+  margin-top: -28px;
+}
+
+.teams-preview-avatar.small {
+  width: 42px;
+  height: 42px;
+  margin-top: 0;
+}
+
+.teams-preview-form-title {
+  margin-top: 12px;
+  font-size: 19px;
+  color: #22262e;
+  font-weight: 700;
+}
+
+.teams-preview-booked {
+  position: absolute;
+  top: 186px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #d9f5e7;
+  color: #1c8b5a;
+  padding: 4px 10px;
+  font-weight: 700;
+}
+
+.teams-preview-robin-card {
+  position: absolute;
+  bottom: 24px;
+  width: 72%;
+  border: 1px solid #e9e9e9;
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 18px 14px;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+.teams-preview-robin-title {
+  font-size: 19px;
+  color: #262b33;
+  font-weight: 700;
+}
+
+.teams-preview-profile {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+
+.teams-preview-profile-name {
+  color: #262b33;
+  font-weight: 700;
+}
+
+.teams-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.teams-plan-card {
+  border: 1px solid #2a313d;
+  border-radius: 14px;
+  background: #16191f;
+  padding: 14px 14px 12px;
+}
+
+.teams-trial-pill {
+  border: 1px solid #3a4151;
+  border-radius: 999px;
+  font-size: 11px;
+  padding: 3px 8px;
+  color: #cdd5e2;
+}
+
+.teams-plan-price {
+  margin: 8px 0 0;
+  font-size: 39px;
+  line-height: 1;
+  font-family: 'Sora', 'Trebuchet MS', sans-serif;
+}
+
+.teams-plan-cycle {
+  margin: 8px 0;
+  color: #b7c0cf;
+}
+
+.teams-plan-cta {
+  width: 100%;
+  border: 1px solid #3a4251;
+  border-radius: 11px;
+  background: #1a1f2a;
+  color: #edf2fa;
+  padding: 10px;
+  font-weight: 700;
+}
+
+.teams-plan-cta-primary {
+  background: #eef2f8;
+  color: #0f131b;
+}
+
+.teams-plan-subtitle {
+  margin: 12px 0 10px;
+  color: #b5becc;
+}
+
+.teams-plan-card ul {
+  margin: 0;
+  padding-left: 17px;
+  color: #d5dce9;
+  display: grid;
+  gap: 6px;
+}
+
+.teams-upgrade-foot {
+  margin-top: 14px;
+  border: 1px solid #2b3240;
+  border-radius: 13px;
+  background: linear-gradient(160deg, #262a31, #22262e);
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.teams-individual-label {
+  margin: 0;
+  color: #c0c8d6;
+}
+
+.teams-individual-price {
+  margin: 2px 0 0;
+  font-size: 37px;
+  line-height: 1;
+  font-family: 'Sora', 'Trebuchet MS', sans-serif;
+}
+
+.teams-current-plan {
+  border: 1px solid #474f5e;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #cad2df;
+}
+
+.routing-panel-shell {
+  max-width: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.routing-page-card {
+  min-height: calc(100vh - 60px);
+  border-radius: 12px;
+  background: #2a2a2a;
+  padding: 64px 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.routing-page-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.routing-page-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.routing-feature-card {
+  width: min(900px, 100%);
+  min-height: 452px;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.routing-hero-copy {
+  background: #0c0c0d;
+  border-radius: 22px;
+  border: 1px solid #1c1d21;
+  padding: 18px 20px 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.routing-kicker {
+  display: inline-flex;
+  width: fit-content;
+  border: 1px solid #273041;
+  border-radius: 999px;
+  background: #11131a;
+  color: #cfd7e4;
+  padding: 4px 9px;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.routing-hero-copy h1 {
+  margin: 0;
+  font-family: 'Sora', 'Trebuchet MS', sans-serif;
+  font-size: clamp(27px, 3vw, 34px);
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+  max-width: 350px;
+}
+
+.routing-hero-copy p {
+  color: #aeb7c4;
+  margin: 12px 0 0;
+  max-width: 370px;
+  font-size: 15px;
+}
+
+.routing-availability-line {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ccd4e1;
+  padding-top: 18px;
+  border-top: 1px solid #20232b;
+}
+
+.routing-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.routing-pill-team {
+  background: #f8be89;
+  color: #1d1309;
+}
+
+.routing-pill-orgs {
+  background: #d5b4ff;
+  color: #281732;
+}
+
+.routing-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.routing-try-btn {
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 150px;
+  white-space: nowrap;
+}
+
+.routing-arrow {
+  font-size: 18px;
+}
+
+.routing-learn-more {
+  color: #cbd4e2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.routing-preview-wrap {
+  display: grid;
+  place-items: center;
+}
+
+.routing-preview-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 22px 22px 0;
+  background: #f5f5f4;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 64px 1fr 110px;
+}
+
+.routing-preview-top {
+  background: linear-gradient(180deg, #fefefe, #f1f1f0);
+}
+
+.routing-preview-chart {
+  position: relative;
+  margin: 18px;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.routing-chart-heading {
+  margin: 16px 14px 0;
+  color: #40454f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.routing-chart-line {
+  position: absolute;
+  left: 22%;
+  right: 12%;
+  height: 32px;
+  border-radius: 100px 100px 0 0;
+  opacity: 0.65;
+}
+
+.routing-chart-line-a {
+  bottom: 64px;
+  background: linear-gradient(180deg, rgba(151, 221, 239, 0.35), rgba(151, 221, 239, 0.1));
+}
+
+.routing-chart-line-b {
+  bottom: 52px;
+  background: linear-gradient(180deg, rgba(247, 216, 126, 0.38), rgba(247, 216, 126, 0.12));
+  left: 18%;
+  right: 16%;
+}
+
+.routing-chart-line-c {
+  bottom: 40px;
+  background: linear-gradient(180deg, rgba(172, 223, 154, 0.45), rgba(172, 223, 154, 0.14));
+  left: 16%;
+  right: 14%;
+}
+
+.routing-preview-table {
+  padding: 14px 18px;
+  display: grid;
+  gap: 10px;
+  background: #fff;
+}
+
+.routing-row-muted {
+  height: 12px;
+  border-radius: 999px;
+  background: #ececec;
+}
+
+@media (min-width: 1100px) {
+  .routing-hero-copy {
+    grid-template-columns: 1fr 390px;
+    min-height: 452px;
+  }
+
+  .teams-hero-copy {
+    grid-template-columns: 1fr 390px;
+    min-height: 452px;
+  }
+}
+
 .schedule-head {
   display: flex;
   justify-content: space-between;
@@ -1944,6 +2566,52 @@ select {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+
+  .teams-plan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .teams-upgrade-modal {
+    max-height: calc(100vh - 90px);
+  }
+
+  .teams-hero-copy {
+    grid-template-columns: 1fr;
+  }
+
+  .teams-page-card {
+    padding: 22px;
+  }
+
+  .teams-feature-card,
+  .routing-feature-card {
+    grid-template-columns: 1fr;
+  }
+
+  .teams-hero-copy,
+  .teams-preview-card,
+  .routing-hero-copy,
+  .routing-preview-card {
+    border-radius: 22px;
+  }
+
+  .teams-feature-card .teams-hero-copy,
+  .routing-feature-card .routing-hero-copy {
+    border-radius: 22px 22px 0 0;
+  }
+
+  .teams-feature-card .teams-preview-card,
+  .routing-feature-card .routing-preview-card {
+    border-radius: 0 0 22px 22px;
+  }
+
+  .routing-hero-copy {
+    grid-template-columns: 1fr;
+  }
+
+  .routing-page-card {
+    padding: 22px;
   }
 
   .event-type-modal-scroll {

@@ -4,6 +4,8 @@ import EventTypesPage from './pages/admin/EventTypesPage.jsx';
 import BookingsPage from './pages/admin/BookingsPage.jsx';
 import AvailabilityPage from './pages/admin/AvailabilityPage.jsx';
 import AvailabilityDetailPage from './pages/admin/AvailabilityDetailPage.jsx';
+import TeamsPage from './pages/admin/TeamsPage.jsx';
+import RoutingPage from './pages/admin/RoutingPage.jsx';
 import LandingPage from './pages/public/LandingPage.jsx';
 import PublicProfilePage from './pages/public/PublicProfilePage.jsx';
 import PublicBookingPage from './pages/public/PublicBookingPage.jsx';
@@ -21,6 +23,8 @@ export default function App() {
         <Route path="bookings" element={<BookingsPage />} />
         <Route path="availability" element={<AvailabilityPage />} />
         <Route path="availability/:scheduleId" element={<AvailabilityDetailPage />} />
+        <Route path="teams" element={<TeamsPage />} />
+        <Route path="routing" element={<RoutingPage />} />
       </Route>
 
       <Route path="/book/:slug" element={<PublicBookingPage />} />
