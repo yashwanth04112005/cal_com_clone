@@ -5509,6 +5509,7 @@ select {
   flex-wrap: wrap;
 }
 
+.calendar-add-link,
 .calendar-add-row button {
   width: 34px;
   height: 34px;
@@ -5516,6 +5517,22 @@ select {
   border: 1px solid #273041;
   background: #101521;
   color: #e8edf5;
+}
+
+.calendar-add-link {
+  min-width: 92px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.calendar-add-link:hover {
+  background: #161d2a;
 }
 
 @media (max-width: 980px) {

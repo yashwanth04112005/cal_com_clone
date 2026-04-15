@@ -3,6 +3,26 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { api } from '../../lib/api.js';
 import { humanDateTime } from '../../lib/time.js';
 
+function formatUtcCalendarStamp(value) {
+  return value.replace(/[-:]/g, '').replace('.000', '').replace(' ', 'T') + 'Z';
+}
+
+function buildCalendarLinks(booking) {
+  const title = encodeURIComponent(booking.event_title || 'Meeting');
+  const details = encodeURIComponent(`Meeting with ${booking.user_name} and ${booking.booker_name}`);
+  const location = encodeURIComponent('Cal Video');
+  const start = formatUtcCalendarStamp(booking.start_time_utc);
+  const end = formatUtcCalendarStamp(booking.end_time_utc);
+  const range = `${start}/${end}`;
+
+  return {
+    google: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${range}&details=${details}&location=${location}`,
+    outlook: `https://outlook.live.com/calendar/0/deeplink/compose?subject=${title}&body=${details}&location=${location}&startdt=${encodeURIComponent(booking.start_time_utc)}&enddt=${encodeURIComponent(booking.end_time_utc)}`,
+    apple: `data:text/calendar;charset=utf-8,${encodeURIComponent(`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${booking.event_title || 'Meeting'}\nDTSTART:${start}\nDTEND:${end}\nDESCRIPTION:Meeting with ${booking.user_name} and ${booking.booker_name}\nLOCATION:Cal Video\nEND:VEVENT\nEND:VCALENDAR`)}`,
+    ics: `data:text/calendar;charset=utf-8,${encodeURIComponent(`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${booking.event_title || 'Meeting'}\nDTSTART:${start}\nDTEND:${end}\nDESCRIPTION:Meeting with ${booking.user_name} and ${booking.booker_name}\nLOCATION:Cal Video\nEND:VEVENT\nEND:VCALENDAR`)}`
+  };
+}
+
 export default function BookingConfirmationPage() {
   const location = useLocation();
   const { slug, bookingId } = useParams();
@@ -12,6 +32,7 @@ export default function BookingConfirmationPage() {
   const stateBooking = location.state?.booking;
   const cachedBooking = sessionStorage.getItem(`booking-${bookingId}`);
   const booking = stateBooking || (cachedBooking ? JSON.parse(cachedBooking) : null);
+  const calendarLinks = booking ? buildCalendarLinks(booking) : null;
 
   const handleCancel = async () => {
     if (!booking?.id) {
@@ -84,10 +105,22 @@ export default function BookingConfirmationPage() {
 
             <div className="calendar-add-row">
               <span>Add to calendar</span>
-              <button type="button">G</button>
-              <button type="button">O</button>
-              <button type="button">I</button>
-              <button type="button">K</button>
+              <a className="calendar-add-link" href={calendarLinks.google} target="_blank" rel="noreferrer" aria-label="Add to Google Calendar">
+                <span aria-hidden="true">📅</span>
+                Google
+              </a>
+              <a className="calendar-add-link" href={calendarLinks.outlook} target="_blank" rel="noreferrer" aria-label="Add to Outlook Calendar">
+                <span aria-hidden="true">✉</span>
+                Outlook
+              </a>
+              <a className="calendar-add-link" href={calendarLinks.apple} download="event.ics" aria-label="Add to Apple Calendar">
+                <span aria-hidden="true"></span>
+                Apple
+              </a>
+              <a className="calendar-add-link" href={calendarLinks.ics} download="event.ics" aria-label="Download ICS file">
+                <span aria-hidden="true">⌘</span>
+                ICS
+              </a>
             </div>
           </>
         ) : null}
