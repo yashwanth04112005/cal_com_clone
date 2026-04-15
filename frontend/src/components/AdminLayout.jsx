@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 
 const primaryItems = [
@@ -25,8 +25,8 @@ const insightItems = [
 
 const footerItems = [
   { href: '/yashwanthpaladugula', label: 'View public page', icon: '↗', external: true },
-  { href: '#', label: 'Refer and earn', icon: '◎' },
-  { href: '#', label: 'Settings', icon: '⚙' }
+  { href: '/admin/refer', label: 'Refer and earn', icon: '◎' },
+  { href: '/admin/settings', label: 'Settings', icon: '⚙' }
 ];
 
 export default function AdminLayout() {
@@ -179,22 +179,27 @@ export default function AdminLayout() {
         </nav>
 
         <div className="sidebar-footer">
-          <button type="button" className="sidebar-footer-button" onClick={handleCopyPublicLink}>
-            <span className="sidebar-footer-icon" aria-hidden="true">⎘</span>
-            <span>{copiedPublicLink ? 'Copied public page link' : 'Copy public page link'}</span>
-          </button>
-          {footerItems.map((item) => (
-            item.external ? (
-              <Link key={item.label} to={item.href} target="_blank" rel="noreferrer">
-                <span className="sidebar-footer-icon" aria-hidden="true">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ) : (
-              <a key={item.label} href={item.href}>
-                <span className="sidebar-footer-icon" aria-hidden="true">{item.icon}</span>
-                <span>{item.label}</span>
-              </a>
-            )
+          {footerItems.map((item, index) => (
+            <Fragment key={item.label}>
+              {item.external ? (
+                <Link to={item.href} target="_blank" rel="noreferrer">
+                  <span className="sidebar-footer-icon" aria-hidden="true">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              ) : (
+                <Link to={item.href}>
+                  <span className="sidebar-footer-icon" aria-hidden="true">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              )}
+
+              {index === 0 ? (
+                <button type="button" className="sidebar-footer-button" onClick={handleCopyPublicLink}>
+                  <span className="sidebar-footer-icon" aria-hidden="true">⎘</span>
+                  <span>{copiedPublicLink ? 'Copied public page link' : 'Copy public page link'}</span>
+                </button>
+              ) : null}
+            </Fragment>
           ))}
           <span className="sidebar-version">© 2026 Cal.com, Inc.</span>
         </div>
