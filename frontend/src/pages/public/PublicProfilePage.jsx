@@ -14,8 +14,8 @@ export default function PublicProfilePage() {
       setLoading(true);
       setError('');
       try {
-        const data = await api.listEventTypes();
-        setEventTypes(data.filter((item) => item.is_active));
+        const data = await api.listPublicProfileEventTypes(username);
+        setEventTypes(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -24,7 +24,7 @@ export default function PublicProfilePage() {
     }
 
     loadEventTypes();
-  }, []);
+  }, [username]);
 
   const visibleEventTypes = useMemo(() => eventTypes, [eventTypes]);
 

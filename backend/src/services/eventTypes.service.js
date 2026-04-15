@@ -40,6 +40,26 @@ export async function getEventTypeBySlug(slug) {
   return rows[0] || null;
 }
 
+export async function listPublicEventTypesByUsername(username) {
+  const rows = await execute(
+    `SELECT et.id, et.title, et.description, et.duration_minutes, et.slug, et.is_active,
+            COALESCE(us.username, REPLACE(LOWER(u.name), ' ', '')) AS username
+     FROM event_types et
+     JOIN users u ON u.id = et.user_id
+     LEFT JOIN user_settings us ON us.user_id = u.id
+     WHERE et.deleted_at IS NULL
+       AND et.is_active = 1
+       AND (
+         COALESCE(us.username, '') = ?
+         OR REPLACE(LOWER(u.name), ' ', '') = ?
+       )
+     ORDER BY et.created_at DESC`,
+    [username.toLowerCase(), username.toLowerCase()]
+  );
+
+  return rows;
+}
+
 export async function createEventType(payload) {
   const slug = payload.slug ? uniqueSlug(payload.slug) : uniqueSlug(payload.title);
   const scheduleId = payload.schedule_id ?? (await getDefaultScheduleForUser())?.id ?? null;

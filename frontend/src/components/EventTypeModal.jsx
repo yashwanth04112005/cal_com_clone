@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const DEFAULT_FORM = {
   title: '',
@@ -11,6 +11,22 @@ const DEFAULT_FORM = {
 };
 
 const URL_PREFIX = 'https://cal.com/yashwanthpaladugula/';
+
+function buildFormFromEventType(eventType) {
+  if (!eventType) {
+    return DEFAULT_FORM;
+  }
+
+  return {
+    title: eventType.title || '',
+    url: `${URL_PREFIX}${eventType.slug || ''}`,
+    description: eventType.description || '',
+    duration_minutes: Number(eventType.duration_minutes) || 15,
+    slug: eventType.slug || '',
+    buffer_before_minutes: Number(eventType.buffer_before_minutes) || 10,
+    buffer_after_minutes: Number(eventType.buffer_after_minutes) || 10
+  };
+}
 
 function toSlug(value) {
   const normalized = value
@@ -27,8 +43,26 @@ function toSlug(value) {
   return normalized;
 }
 
-export default function EventTypeModal({ open, onClose, onSubmit }) {
+export default function EventTypeModal({
+  open,
+  onClose,
+  onSubmit,
+  mode = 'create',
+  initialValues = null
+}) {
   const [form, setForm] = useState(DEFAULT_FORM);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    if (mode === 'edit' && initialValues) {
+      setForm(buildFormFromEventType(initialValues));
+    } else {
+      setForm(DEFAULT_FORM);
+    }
+  }, [open, mode, initialValues]);
 
   if (!open) {
     return null;
@@ -52,8 +86,8 @@ export default function EventTypeModal({ open, onClose, onSubmit }) {
       description: form.description,
       duration_minutes: Number(form.duration_minutes) || 15,
       slug: slugFromUrl || slugFromTitle,
-      buffer_before_minutes: 10,
-      buffer_after_minutes: 10
+      buffer_before_minutes: Number(form.buffer_before_minutes) || 10,
+      buffer_after_minutes: Number(form.buffer_after_minutes) || 10
     });
     setForm(DEFAULT_FORM);
   };
@@ -82,8 +116,12 @@ export default function EventTypeModal({ open, onClose, onSubmit }) {
     <div className="modal-backdrop event-type-modal-backdrop" onClick={handleClose}>
       <div className="modal-card event-type-modal-card" onClick={(event) => event.stopPropagation()}>
         <div className="event-type-modal-scroll">
-          <h3>Add a new event type</h3>
-          <p className="muted">Set up event types to offer different types of meetings.</p>
+          <h3>{mode === 'edit' ? 'Edit event type' : 'Add a new event type'}</h3>
+          <p className="muted">
+            {mode === 'edit'
+              ? 'Update your event type details and public booking link.'
+              : 'Set up event types to offer different types of meetings.'}
+          </p>
 
           <form className="form-grid event-type-form-grid" onSubmit={handleSubmit}>
             <label>
@@ -140,7 +178,7 @@ export default function EventTypeModal({ open, onClose, onSubmit }) {
                 Close
               </button>
               <button type="submit" className="button-primary">
-                Continue
+                {mode === 'edit' ? 'Save changes' : 'Continue'}
               </button>
             </div>
           </form>

@@ -718,6 +718,10 @@ select {
   margin-right: 4px;
 }
 
+.event-delete-btn {
+  color: #f1b8c0;
+}
+
 .icon-btn {
   min-width: 40px;
   min-height: 38px;
@@ -1134,6 +1138,30 @@ select {
   gap: 10px;
 }
 
+.availability-create-form {
+  margin-bottom: 14px;
+  border: 1px solid #1f2735;
+  border-radius: 12px;
+  background: #0b1018;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(160px, 220px) auto auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.availability-create-default {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #d6deea;
+  font-weight: 600;
+}
+
+.availability-create-default input {
+  width: auto;
+}
+
 .availability-tabs {
   border: 1px solid #242c38;
   background: #0a0f18;
@@ -1358,6 +1386,10 @@ select {
   gap: 22px;
 }
 
+.availability-detail-name-edit {
+  margin-bottom: 12px;
+}
+
 .availability-editor-card {
   border: 1px solid #1a212e;
   border-radius: 12px;
@@ -1367,10 +1399,31 @@ select {
 
 .availability-day-row {
   display: grid;
-  grid-template-columns: 48px 98px 108px 20px 108px 30px 30px;
+  grid-template-columns: 48px 98px minmax(240px, 1fr) 30px 30px;
   align-items: center;
   gap: 10px;
   padding: 10px 0;
+}
+
+.availability-time-edit-wrap {
+  display: grid;
+  gap: 8px;
+}
+
+.availability-time-edit-row {
+  display: grid;
+  grid-template-columns: 108px 20px 108px 30px;
+  gap: 8px;
+  align-items: center;
+}
+
+.availability-time-input {
+  border: 1px solid #2a3240;
+  border-radius: 12px;
+  background: #0d121b;
+  color: #e6ebf5;
+  padding: 8px 10px;
+  min-height: 38px;
 }
 
 .availability-day-name {

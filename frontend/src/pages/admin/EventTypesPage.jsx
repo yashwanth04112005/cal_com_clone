@@ -3,7 +3,7 @@ import { api } from '../../lib/api.js';
 import { formatMinutes, slugPath } from '../../lib/time.js';
 import EventTypeModal from '../../components/EventTypeModal.jsx';
 
-function EventTypeRow({ eventType, onToggle }) {
+function EventTypeRow({ eventType, onToggle, onEdit, onDelete, onCopy }) {
   const publicPath = slugPath(eventType.slug);
   const profilePath = `/yashwanthpaladugula/${eventType.slug}`;
 
@@ -32,11 +32,14 @@ function EventTypeRow({ eventType, onToggle }) {
         <a className="icon-btn icon-btn-square" href={publicPath} target="_blank" rel="noreferrer" aria-label="Open event link">
           ↗
         </a>
-        <button className="icon-btn icon-btn-square" type="button" aria-label="Copy event link">
+        <button className="icon-btn icon-btn-square" type="button" aria-label="Copy event link" onClick={() => onCopy(eventType)}>
           ⛓
         </button>
-        <button className="icon-btn icon-btn-square" type="button" aria-label="More actions">
-          ...
+        <button className="icon-btn icon-btn-square" type="button" aria-label="Edit event type" onClick={() => onEdit(eventType)}>
+          ✎
+        </button>
+        <button className="icon-btn icon-btn-square event-delete-btn" type="button" aria-label="Delete event type" onClick={() => onDelete(eventType)}>
+          🗑
         </button>
       </div>
     </article>
@@ -49,6 +52,7 @@ export default function EventTypesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingEventType, setEditingEventType] = useState(null);
 
   const loadEventTypes = async () => {
     setLoading(true);
@@ -91,13 +95,55 @@ export default function EventTypesPage() {
     }
   };
 
-  const handleCreate = async (payload) => {
+  const handleCreateOrEdit = async (payload) => {
     try {
-      await api.createEventType(payload);
+      if (editingEventType) {
+        await api.updateEventType(editingEventType.id, payload);
+      } else {
+        await api.createEventType(payload);
+      }
       setModalOpen(false);
+      setEditingEventType(null);
       await loadEventTypes();
     } catch (err) {
       setError(err.message);
+    }
+  };
+
+  const handleEdit = (eventType) => {
+    setEditingEventType(eventType);
+    setModalOpen(true);
+  };
+
+  const handleDelete = async (eventType) => {
+    const shouldDelete = window.confirm(`Delete "${eventType.title}"? This action cannot be undone.`);
+    if (!shouldDelete) {
+      return;
+    }
+
+    try {
+      await api.deleteEventType(eventType.id);
+      await loadEventTypes();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleCopy = async (eventType) => {
+    const link = `${window.location.origin}${slugPath(eventType.slug)}`;
+
+    try {
+      await navigator.clipboard.writeText(link);
+    } catch {
+      const input = document.createElement('input');
+      input.value = link;
+      input.setAttribute('readonly', '');
+      input.style.position = 'absolute';
+      input.style.left = '-9999px';
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
     }
   };
 
@@ -116,7 +162,14 @@ export default function EventTypesPage() {
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search"
           />
-          <button className="button-light" type="button" onClick={() => setModalOpen(true)}>
+          <button
+            className="button-light"
+            type="button"
+            onClick={() => {
+              setEditingEventType(null);
+              setModalOpen(true);
+            }}
+          >
             + New
           </button>
         </div>
@@ -133,12 +186,27 @@ export default function EventTypesPage() {
 
         {filteredEventTypes.map((eventType, index) => (
           <div key={eventType.id} style={{ animationDelay: `${index * 0.05}s` }} className="reveal-row">
-            <EventTypeRow eventType={eventType} onToggle={handleToggle} />
+            <EventTypeRow
+              eventType={eventType}
+              onToggle={handleToggle}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onCopy={handleCopy}
+            />
           </div>
         ))}
       </div>
 
-      <EventTypeModal open={modalOpen} onClose={() => setModalOpen(false)} onSubmit={handleCreate} />
+      <EventTypeModal
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+          setEditingEventType(null);
+        }}
+        onSubmit={handleCreateOrEdit}
+        mode={editingEventType ? 'edit' : 'create'}
+        initialValues={editingEventType}
+      />
     </section>
   );
 }

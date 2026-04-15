@@ -51,6 +51,29 @@ export const api = {
   listSchedules() {
     return request('/api/availability/schedules');
   },
+  createSchedule(payload) {
+    return request('/api/availability/schedules', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+  },
+  updateSchedule(id, payload) {
+    return request(`/api/availability/schedules/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload)
+    });
+  },
+  deleteSchedule(id) {
+    return request(`/api/availability/schedules/${id}`, {
+      method: 'DELETE'
+    });
+  },
+  replaceScheduleWindows(id, payload) {
+    return request(`/api/availability/schedules/${id}/windows`, {
+      method: 'PUT',
+      body: JSON.stringify(payload)
+    });
+  },
   listBookings(scope = 'upcoming') {
     return request(`/api/bookings?scope=${scope}`);
   },
@@ -61,6 +84,9 @@ export const api = {
   },
   getPublicEvent(slug) {
     return request(`/api/public/event-types/${slug}`);
+  },
+  listPublicProfileEventTypes(username) {
+    return request(`/api/public/profiles/${encodeURIComponent(username)}/event-types`);
   },
   getPublicSlots(slug, date) {
     return request(`/api/public/event-types/${slug}/slots?date=${date}`);

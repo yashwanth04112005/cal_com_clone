@@ -1,6 +1,7 @@
 import { validate } from '../utils/validate.js';
 import { createBookingSchema, rescheduleSchema } from '../validators/booking.validators.js';
 import { createPublicBooking, getAvailableSlots, getBookingByToken, getPublicEventType, rescheduleBooking } from '../services/booking.service.js';
+import { listPublicEventTypesByUsername } from '../services/eventTypes.service.js';
 
 export async function getEventType(req, res) {
   res.json(await getPublicEventType(req.params.slug));
@@ -36,4 +37,8 @@ export async function getRescheduleBooking(req, res) {
 export async function reschedule(req, res) {
   const payload = validate(rescheduleSchema, { start_time: req.body.start_time });
   res.json(await rescheduleBooking(req.params.token, payload));
+}
+
+export async function getProfileEventTypes(req, res) {
+  res.json(await listPublicEventTypesByUsername(req.params.username || ''));
 }
