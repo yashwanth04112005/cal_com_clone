@@ -1,0 +1,15 @@
+{
+  "name": "calcom-clone",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace backend",
+    "start:backend": "npm run start --workspace backend"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.14.1"
+  }
+}
