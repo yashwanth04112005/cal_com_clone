@@ -83,7 +83,7 @@ export default function PublicBookingPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const step = selectedSlot || searchParams.get('slot') ? 'form' : 'schedule';
+  const step = selectedSlot ? 'form' : 'schedule';
   const calendarCells = useMemo(() => getMonthCells(visibleMonth), [visibleMonth]);
   const monthLabel = useMemo(
     () => new Date(`${visibleMonth}T00:00:00`).toLocaleDateString([], { month: 'long', year: 'numeric' }),
@@ -137,10 +137,21 @@ export default function PublicBookingPage() {
       setVisibleMonth(startOfMonth(dateParam));
     }
 
-    if (slotParam) {
-      setSelectedSlot(slotParam);
-    }
+    setSelectedSlot(slotParam || '');
   }, [searchParams]);
+
+  useEffect(() => {
+    if (!selectedSlot) {
+      return;
+    }
+
+    const isSelectedSlotAvailable = slots.some((slot) => slot.start_time === selectedSlot);
+
+    if (!isSelectedSlotAvailable) {
+      setSelectedSlot('');
+      navigate(`/book/${slug}?date=${selectedDate}`, { replace: true });
+    }
+  }, [selectedSlot, slots, slug, selectedDate, navigate]);
 
   useEffect(() => {
     if (eventData && !searchParams.get('date')) {
@@ -164,6 +175,14 @@ export default function PublicBookingPage() {
     event.preventDefault();
     if (!selectedSlot) {
       setError('Please select a time slot.');
+      return;
+    }
+
+    const isSelectedSlotAvailable = slots.some((slot) => slot.start_time === selectedSlot);
+    if (!isSelectedSlotAvailable) {
+      setError('Selected slot changed. Please choose a slot again.');
+      setSelectedSlot('');
+      navigate(`/book/${slug}?date=${selectedDate}`, { replace: true });
       return;
     }
 
