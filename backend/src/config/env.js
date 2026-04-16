@@ -24,7 +24,7 @@ for (const key of requiredKeys) {
 }
 
 export const env = {
-  port: Number(process.env.PORT || 4000),
+  port: Number(process.env.PORT || 5000),
   nodeEnv: normalize(process.env.NODE_ENV) || 'development',
   dbHost: normalize(process.env.DB_HOST),
   dbPort: Number(process.env.DB_PORT || 3306),
