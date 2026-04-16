@@ -6556,3 +6556,217 @@ select {
     font-size: 24px;
   }
 }
+
+@media (max-width: 640px) {
+  .marketing-nav {
+    padding: 14px 14px;
+  }
+
+  .marketing-nav nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hero-wrap,
+  .section-wrap {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(30px, 10vw, 44px);
+  }
+
+  .dashboard-main {
+    padding: 16px 10px;
+  }
+
+  .panel-head h1 {
+    font-size: 34px;
+  }
+
+  .event-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+  }
+
+  .event-controls {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .bookings-left-tools,
+  .bookings-right-tools {
+    gap: 8px;
+  }
+
+  .bookings-row-title {
+    font-size: 18px;
+  }
+
+  .bookings-row-subtitle {
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  .bookings-empty-title {
+    font-size: 24px;
+  }
+
+  .availability-create-form {
+    grid-template-columns: 1fr;
+  }
+
+  .availability-title-row h2 {
+    font-size: 24px;
+  }
+
+  .availability-summary,
+  .availability-timezone {
+    font-size: 14px;
+  }
+
+  .availability-day-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 8px;
+  }
+
+  .availability-time-edit-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .time-separator {
+    display: none;
+  }
+
+  .public-page,
+  .public-profile-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .public-card,
+  .public-card-form,
+  .public-card-schedule {
+    border-radius: 14px;
+  }
+
+  .public-left,
+  .public-calendar-panel,
+  .public-slots-panel,
+  .public-form-panel,
+  .public-right {
+    padding: 14px;
+  }
+
+  .calendar-day,
+  .calendar-empty {
+    height: 40px;
+  }
+
+  .success-card,
+  .confirm-card {
+    padding: 16px;
+  }
+
+  .success-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .settings-main {
+    padding: 12px;
+  }
+
+  .settings-main-head h1 {
+    font-size: 30px;
+  }
+
+  .settings-section h2 {
+    font-size: 22px;
+  }
+
+  .settings-card h3 {
+    font-size: 20px;
+  }
+
+  .settings-calendars-section-head h2 {
+    font-size: 24px;
+  }
+
+  .teams-upgrade-modal {
+    padding: 14px;
+  }
+
+  .teams-plan-price,
+  .teams-individual-price {
+    font-size: 30px;
+  }
+
+  .routing-page-card,
+  .teams-page-card,
+  .insights-page-card {
+    padding: 14px;
+  }
+
+  .app-category-grid,
+  .app-popular-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-store-head h1,
+  .insights-history-head h1,
+  .workflows-head h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-actions,
+  .head-actions,
+  .form-actions,
+  .booking-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-light,
+  .button-primary,
+  .button-ghost {
+    width: 100%;
+  }
+
+  .bookings-scope-tab {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+
+  .bookings-filter-btn,
+  .bookings-icon-btn,
+  .bookings-page-size-btn,
+  .bookings-page-nav,
+  .bookings-more-btn {
+    border-radius: 10px;
+    padding: 6px 9px;
+  }
+
+  .bookings-row-date {
+    font-size: 16px;
+  }
+
+  .bookings-row-time,
+  .bookings-row-link {
+    font-size: 12px;
+  }
+
+  .settings-toggle-card h2,
+  .settings-profile-head h1,
+  .availability-detail-title-wrap h1 {
+    font-size: 26px;
+  }
+}
